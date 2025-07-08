@@ -1,0 +1,4 @@
+<?jelly escape-by-default='true'?>
+<div>
+    This plugin add one node monitor for the Git version of agents
+</div>

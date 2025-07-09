@@ -14,7 +14,7 @@
   <version>${changelist}</version>
   <packaging>hpi</packaging>
 
-  <name>TODO Plugin</name>
+  <name>Git Version Node Monitor Plugin</name>
   <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
   <licenses>
     <license>

@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import jenkins.MasterToSlaveFileCallable;
+import jenkins.agents.ControllerToAgentFileCallable;
 import org.jenkinsci.Symbol;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
@@ -74,8 +74,11 @@ public class GitVersionNodeMonitor extends NodeMonitor {
     /**
      * Obtains the string that represents the architecture.
      */
-    private static class GetGitVersion extends MasterToSlaveFileCallable<String> {
+    private static class GetGitVersion implements ControllerToAgentFileCallable<String> {
 
+        /**
+         * Logger
+         */
         private static final Logger LOG = LoggerFactory.getLogger(GetGitVersion.class);
 
         @Override

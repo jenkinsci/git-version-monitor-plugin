@@ -19,7 +19,7 @@ Future version of this plugin could support version comparison and disconnect no
 
 ## How to use
 
-Just install the plugin, noo configuration is needed
+Just install the plugin, no configuration is needed
 
 ## LICENSE
 

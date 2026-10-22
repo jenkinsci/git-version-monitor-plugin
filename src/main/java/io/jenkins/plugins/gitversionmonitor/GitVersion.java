@@ -1,12 +1,16 @@
 package io.jenkins.plugins.gitversionmonitor;
 
+import java.io.Serializable;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @NullMarked
-public record GitVersion(Integer major, Integer minor, Integer patch, Integer build) {
+public record GitVersion(Integer major, Integer minor, Integer patch, Integer build)
+        implements Comparable<GitVersion>, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final Logger LOG = LoggerFactory.getLogger(GitVersion.class);
 
@@ -49,6 +53,21 @@ public record GitVersion(Integer major, Integer minor, Integer patch, Integer bu
             LOG.error("Failed to parse Git version: {}", version, e);
             return null;
         }
+    }
+
+    @Override
+    public int compareTo(GitVersion other) {
+        int result = major.compareTo(other.major);
+        if (result == 0) {
+            result = minor.compareTo(other.minor);
+        }
+        if (result == 0) {
+            result = patch.compareTo(other.patch);
+        }
+        if (result == 0) {
+            result = build.compareTo(other.build);
+        }
+        return result;
     }
 
     @Override

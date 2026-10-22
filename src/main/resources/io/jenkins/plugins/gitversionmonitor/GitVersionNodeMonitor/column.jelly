@@ -1,4 +1,11 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:s="/lib/form">
-    <td align="right" data="${data}"><j:out value="${from.toHtml(data)}"/></td>
+<j:jelly xmlns:j="jelly:core">
+    <td align="right" data="${from.toHtml(data)}" tooltip="${from.getTooltip(data)}">
+        <j:choose>
+            <j:when test="${from.isOutdated(data)}">
+                <span style="color: var(--warning-color, #e6a700); font-weight: bold;">&#9888; ${from.toHtml(data)}</span>
+            </j:when>
+            <j:otherwise>${from.toHtml(data)}</j:otherwise>
+        </j:choose>
+    </td>
 </j:jelly>

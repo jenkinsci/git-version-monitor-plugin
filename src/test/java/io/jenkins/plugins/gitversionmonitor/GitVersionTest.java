@@ -1,6 +1,7 @@
 package io.jenkins.plugins.gitversionmonitor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,13 @@ class GitVersionTest {
         assertEquals(GitVersion.parse("2.50.0.1"), GitVersion.of(2, 50, 0, 1));
         assertEquals(GitVersion.parse("2.50.0"), GitVersion.of(2, 50, 0, 0));
         assertEquals(GitVersion.parse("2.50"), GitVersion.of(2, 50, 0, 0));
+    }
+
+    @Test
+    void shouldCompareVersions() {
+        assertTrue(GitVersion.of(2, 49, 9, 0).compareTo(GitVersion.of(2, 50, 0, 0)) < 0);
+        assertTrue(GitVersion.of(2, 50, 0, 1).compareTo(GitVersion.of(2, 50, 0, 0)) > 0);
+        assertEquals(0, GitVersion.of(2, 50, 0, 0).compareTo(GitVersion.of(2, 50, 0, 0)));
     }
 
     @Test

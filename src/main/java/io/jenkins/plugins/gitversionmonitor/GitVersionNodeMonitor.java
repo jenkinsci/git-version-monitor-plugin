@@ -11,7 +11,7 @@ import hudson.util.StreamTaskListener;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.TimeUnit;
+import jenkins.model.Jenkins;
 import jenkins.security.MasterToSlaveCallable;
 import org.jenkinsci.Symbol;
 import org.jspecify.annotations.NullMarked;
@@ -29,11 +29,6 @@ public class GitVersionNodeMonitor extends NodeMonitor {
 
     private static final Logger LOG = LoggerFactory.getLogger(GitVersionNodeMonitor.class);
 
-    private static final long CONTROLLER_CACHE_MILLIS = TimeUnit.MINUTES.toMillis(5);
-
-    private static volatile @Nullable GitVersionInfo cachedControllerVersion;
-    private static volatile long cachedAt;
-
     /** Replaces the controller's version, so that tests can make a node look outdated. */
     private transient @Nullable GitVersionInfo controllerVersionOverride;
 
@@ -47,20 +42,17 @@ public class GitVersionNodeMonitor extends NodeMonitor {
     }
 
     /**
-     * The version of Git on the controller. The result is cached for a few minutes, because
-     * this is called for every node each time the node list is rendered.
+     * The version of Git on the controller, taken from the data that core already collects and
+     * caches for the built-in node. Null if that has not been collected yet.
      */
     private @Nullable GitVersionInfo controllerVersion() {
         if (controllerVersionOverride != null) {
             return controllerVersionOverride;
         }
-        GitVersionInfo cached = cachedControllerVersion;
-        if (cached == null || System.currentTimeMillis() - cachedAt > CONTROLLER_CACHE_MILLIS) {
-            cached = readGitVersion();
-            cachedControllerVersion = cached;
-            cachedAt = System.currentTimeMillis();
-        }
-        return cached;
+        Computer computer = Jenkins.get().toComputer();
+        return computer == null
+                ? null
+                : Jenkins.get().getDescriptorByType(DescriptorImpl.class).get(computer);
     }
 
     /** The version shown in the column, or {@code N/A} if it is unknown. */

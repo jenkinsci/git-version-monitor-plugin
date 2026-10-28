@@ -3,6 +3,7 @@ package io.jenkins.plugins.gitversionmonitor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import java.util.Objects;
 import net.sf.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -19,9 +20,10 @@ class RemoteApiTest {
     @Test
     void nodeListApiExportsGitVersion(JenkinsRule j) throws Exception {
         ColumnTestSupport.enable(new GitVersionNodeMonitor());
-        GitVersionInfo info =
+        GitVersionInfo found =
                 ColumnTestSupport.awaitData(GitVersionNodeMonitor.DescriptorImpl.class, j.jenkins.toComputer());
-        assumeTrue(info != null, "Git is not installed");
+        assumeTrue(found != null, "Git is not installed");
+        GitVersionInfo info = Objects.requireNonNull(found);
 
         JSONObject data = j.getJSON("computer/api/json?depth=1")
                 .getJSONObject()

@@ -1,11 +1,13 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core">
-    <td align="right" data="${from.toHtml(data)}" tooltip="${from.getTooltip(data)}">
+    <td align="right" data="${from.toHtml(data)}">
         <j:choose>
             <j:when test="${from.isOutdated(data)}">
-                <span style="color: var(--warning-color, #e6a700); font-weight: bold;">&#9888; ${from.toHtml(data)}</span>
+                <span class="warning" tooltip="${from.getTooltip(data)}">${from.toHtml(data)}</span>
             </j:when>
-            <j:otherwise>${from.toHtml(data)}</j:otherwise>
+            <j:otherwise>
+                <span tooltip="${from.getTooltip(data)}">${from.toHtml(data)}</span>
+            </j:otherwise>
         </j:choose>
     </td>
 </j:jelly>

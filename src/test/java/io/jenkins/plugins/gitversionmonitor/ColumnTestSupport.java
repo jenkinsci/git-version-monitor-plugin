@@ -44,8 +44,8 @@ final class ColumnTestSupport {
         return j.createWebClient().goTo("computer/");
     }
 
-    /** The cells of the node list that are in the row of the node with this name. */
+    /** The elements with this tooltip that are in the row of the node with this name. */
     static List<HtmlElement> cellsInRow(HtmlPage page, String nodeName, String tooltip) {
-        return page.getByXPath("//tr[contains(@id, '" + nodeName + "')]//td[@tooltip='" + tooltip + "']");
+        return page.getByXPath("//tr[contains(@id, '" + nodeName + "')]//td//span[@tooltip='" + tooltip + "']");
     }
 }

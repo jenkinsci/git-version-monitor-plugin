@@ -92,10 +92,11 @@ class ColumnRenderTest {
         ColumnTestSupport.enable(monitor);
 
         String expected = monitor.getTooltip(version);
-        List<HtmlElement> cells = ColumnTestSupport.renderNodeList(j).getByXPath("//td[@tooltip='" + expected + "']");
+        List<HtmlElement> cells =
+                ColumnTestSupport.renderNodeList(j).getByXPath("//td//span[@tooltip='" + expected + "']");
 
         assertEquals(1, cells.size());
-        assertTrue(cells.get(0).getTextContent().contains("⚠"));
+        assertEquals("warning", cells.get(0).getAttribute("class"));
         assertTrue(expected.endsWith("(older than the controller: 99.0.0)"));
     }
 
